@@ -1,28 +1,26 @@
 package com.fonaziero.dsvendas.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fonaziero.dsvendas.dto.SaleDTO;
-import com.fonaziero.dsvendas.service.SaleService;
-
-
+import com.fonaziero.dsvendas.dto.SellerDTO;
+import com.fonaziero.dsvendas.service.SellerService;
 
 @RestController
-@RequestMapping(value = "/sales")
-public class SellerController {
+@RequestMapping(value = "/sellers")
+public class SaleController {
 
 	@Autowired
-	private SaleService service;
+	private SellerService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<SaleDTO>> findAll(Pageable pageable) {
-		Page<SaleDTO> list = service.findall(pageable);
+	public ResponseEntity<List<SellerDTO>> findAll() {
+		List<SellerDTO> list = service.findall();
 		
 		return ResponseEntity.ok(list);	
 	}
