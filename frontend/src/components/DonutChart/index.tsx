@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { SaleSum } from 'types/sale';
 import { BASE_URL } from 'utils/requests';
@@ -10,18 +11,18 @@ type ChartData = {
 
 function DonutChart() {
 
-    let charData: ChartData = { labels: [], series: [] };
+    const [chartData, setChartData] = useState<ChartData>({ labels: [], series: [] });
 
-    axios.get(BASE_URL + "/sales/sum-by-seller")
+    useEffect( () => {
+        axios.get(BASE_URL + "/sales/sum-by-seller")
         .then( res => {
             const data = res.data as SaleSum[];
             const myLabel = data.map(x => x.sellerName);
             const mySeries = data.map(x => x.sum);
 
-            charData = { labels: myLabel, series: mySeries };
-
-            console.log(data)
+            setChartData({ labels: myLabel, series: mySeries });
         });
+    }, []);
 
     //const mockData = {
     //    series: [477138, 499928, 444867, 220426, 473088],
@@ -34,12 +35,10 @@ function DonutChart() {
         }
     }
 
-
-
     return (
         <Chart 
-            options={{...options, labels: charData.labels}}
-            series={charData.series}
+            options={{...options, labels: chartData.labels}}
+            series={chartData.series}
             type="donut"
             height="240"
         />
